@@ -1,5 +1,6 @@
 package com.example.demobank.controller;
 
+import com.example.demobank.constants.ApiConstants;
 import com.example.demobank.constants.ApiUrls;
 import com.example.demobank.request.CreateAccountRequest;
 import com.example.demobank.request.DepositAmountRequest;
@@ -25,7 +26,7 @@ public class AccountDetailsController {
         if (result.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             result.getAllErrors().forEach(error -> errorMessage.append(error.getDefaultMessage()).append(" "));
-            return new ResponseEntity<>(new BaseResponse(400, "Missing Fields", errorMessage.toString().trim()), HttpStatus.CREATED);
+            return new ResponseEntity<>(new BaseResponse(400, ApiConstants.MISSING_FIELDS, errorMessage.toString().trim()), HttpStatus.CREATED);
         }
         return accountServiceImpl.createNewAccount(createAccountRequest);
     }
@@ -39,7 +40,7 @@ public class AccountDetailsController {
         if (result.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             result.getAllErrors().forEach(error -> errorMessage.append(error.getDefaultMessage()).append(" "));
-            return new ResponseEntity<>(new BaseResponse(400, "Missing Fields", errorMessage.toString().trim()), HttpStatus.CREATED);
+            return new ResponseEntity<>(new BaseResponse(400, ApiConstants.MISSING_FIELDS, errorMessage.toString().trim()), HttpStatus.CREATED);
         }
         return accountServiceImpl.depositFunds(depositAmountRequest);
     }
@@ -49,7 +50,7 @@ public class AccountDetailsController {
         if (result.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             result.getAllErrors().forEach(error -> errorMessage.append(error.getDefaultMessage()).append(" "));
-            return new ResponseEntity<>(new BaseResponse(400, "Missing Fields", errorMessage.toString().trim()), HttpStatus.CREATED);
+            return new ResponseEntity<>(new BaseResponse(400, ApiConstants.MISSING_FIELDS, errorMessage.toString().trim()), HttpStatus.CREATED);
         }
         return accountServiceImpl.withdrawFunds(depositAmountRequest);
     }
@@ -58,7 +59,7 @@ public class AccountDetailsController {
         if (result.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             result.getAllErrors().forEach(error -> errorMessage.append(error.getDefaultMessage()).append(" "));
-            return new ResponseEntity<>(new BaseResponse(400, "Missing Fields", errorMessage.toString().trim()), HttpStatus.CREATED);
+            return new ResponseEntity<>(new BaseResponse(400, ApiConstants.MISSING_FIELDS, errorMessage.toString().trim()), HttpStatus.CREATED);
         }
         return accountServiceImpl.transferFunds(transferFundsRequest);
     }

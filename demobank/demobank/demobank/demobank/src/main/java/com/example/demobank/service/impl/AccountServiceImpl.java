@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
             AccountsTable accountsTable = new AccountsTable();
             accountsTable.setAccountNumber(Common.generateAccountNumber());
             accountsTable.setUser(savedUser);
-            accountsTable.setBalance(0.0);
+            accountsTable.setBalance(BigDecimal.ZERO);
 
             accountsTableRepository.save(accountsTable);
 
@@ -79,14 +80,18 @@ public class AccountServiceImpl implements AccountService {
         Optional<AccountsTable> accountsTable = accountsTableRepository.findById(depositAmountRequest.getAccountId());
         if (accountsTable.isPresent()) {
             AccountsTable sourceAccount = accountsTable.get();
-            Double updatedBalance = sourceAccount.getBalance() + depositAmountRequest.getAmount();
+
+            BigDecimal currentBalance = sourceAccount.getBalance();
+            BigDecimal depositAmount = depositAmountRequest.getAmount();
+            BigDecimal newBalance = currentBalance.add(depositAmount);
+
             TransactionsTable transactionsTable = new TransactionsTable();
             transactionsTable.setAccount(sourceAccount);
             transactionsTable.setTransactionDate(new Date());
             transactionsTable.setAmount(depositAmountRequest.getAmount());
             transactionsTable.setTransactionType("Deposit");
             transactionsTableRepository.save(transactionsTable);
-            sourceAccount.setBalance(updatedBalance);
+            sourceAccount.setBalance(newBalance);
             accountsTableRepository.save(sourceAccount);
             return new ResponseEntity<>(new BaseResponse(200, ApiConstants.OK, "Deposited amount is: " + depositAmountRequest.getAmount()), HttpStatus.OK);
         }
@@ -95,17 +100,25 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ResponseEntity<BaseResponse> withdrawFunds(DepositAmountRequest depositAmountRequest) {
+
         Optional<AccountsTable> accountsTable = accountsTableRepository.findById(depositAmountRequest.getAccountId());
         if (accountsTable.isPresent()) {
-            AccountsTable accountsTable1 = accountsTable.get();
-            boolean isWithdrawalPossible = accountsTable1.getBalance() > depositAmountRequest.getAmount() && accountsTable1.getBalance() > 0.0;
+            AccountsTable sourceAccount = accountsTable.get();
+
+            boolean isWithdrawalPossible = sourceAccount.getBalance().compareTo(depositAmountRequest.getAmount()) >= 0
+                    && depositAmountRequest.getAmount().compareTo(BigDecimal.ZERO) > 0;
+
             if (isWithdrawalPossible) {
-                Double newBalance = accountsTable1.getBalance() - depositAmountRequest.getAmount();
-                accountsTable1.setBalance(newBalance);
-                accountsTableRepository.save(accountsTable1);
+
+                BigDecimal currentBalance = sourceAccount.getBalance();
+                BigDecimal depositAmount = depositAmountRequest.getAmount();
+                BigDecimal newBalance = currentBalance.add(depositAmount);
+
+                sourceAccount.setBalance(newBalance);
+                accountsTableRepository.save(sourceAccount);
 
                 TransactionsTable transactionsTable = new TransactionsTable();
-                transactionsTable.setAccount(accountsTable1);
+                transactionsTable.setAccount(sourceAccount);
                 transactionsTable.setTransactionDate(new Date());
                 transactionsTable.setAmount(depositAmountRequest.getAmount());
                 transactionsTable.setTransactionType("Withdrawal");
@@ -127,19 +140,23 @@ public class AccountServiceImpl implements AccountService {
         Optional<AccountsTable> sourceAccountTable = accountsTableRepository.findById(transferFundsRequest.getSourceAccountId());
         Optional<AccountsTable> destinationAccountTable = accountsTableRepository.findById(transferFundsRequest.getDestinationAccountId());
         if (sourceAccountTable.isPresent() && destinationAccountTable.isPresent()) {
-            AccountsTable accountsTable1 = sourceAccountTable.get();
-            boolean isWithdrawalPossible = accountsTable1.getBalance() > transferFundsRequest.getAmount() && accountsTable1.getBalance() > 0.0;
+            AccountsTable sourceAccount = sourceAccountTable.get();
+
+
+            boolean isWithdrawalPossible = sourceAccount.getBalance().compareTo(transferFundsRequest.getAmount()) >= 0
+                    && transferFundsRequest.getAmount().compareTo(BigDecimal.ZERO) > 0;
+
             if (isWithdrawalPossible) {
-                double newBalance = accountsTable1.getBalance() - transferFundsRequest.getAmount();
-                accountsTable1.setBalance(newBalance);
-                accountsTableRepository.save(accountsTable1);
-                AccountsTable accountsTable2 = destinationAccountTable.get();
-                newBalance = accountsTable2.getBalance() + transferFundsRequest.getAmount();
-                accountsTable2.setBalance(newBalance);
-                accountsTableRepository.save(accountsTable2);
+                BigDecimal newBalance = sourceAccount.getBalance().subtract(transferFundsRequest.getAmount());
+                sourceAccount.setBalance(newBalance);
+                accountsTableRepository.save(sourceAccount);
+                AccountsTable destinationAccount = destinationAccountTable.get();
+                newBalance = destinationAccount.getBalance().add(transferFundsRequest.getAmount());
+                destinationAccount.setBalance(newBalance);
+                accountsTableRepository.save(destinationAccount);
 
                 TransactionsTable transactionsTable = new TransactionsTable();
-                transactionsTable.setAccount(accountsTable1);
+                transactionsTable.setAccount(destinationAccount);
                 transactionsTable.setTransactionDate(new Date());
                 transactionsTable.setAmount(transferFundsRequest.getAmount());
                 transactionsTable.setTransactionType("Fund transferred to " + transferFundsRequest.getDestinationAccountId());

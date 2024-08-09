@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -25,7 +26,7 @@ public class TransactionsTable {
     private String transactionType;
 
     @Column(name = "amount", nullable = false)
-    private Double amount;
+    private BigDecimal amount;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "transaction_date", nullable = false)

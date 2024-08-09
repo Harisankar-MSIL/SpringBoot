@@ -14,6 +14,7 @@ public class ApiConstants {
     public static final String FAILED_RETRIVE="Failed to retrieve details";
     public static final String NO_TRANSACTIONS="No transactions to show";
     public static final String INSUFFICIENT="Insufficient Funds or Enter a small amount";
+    public static final String MISSING_FIELDS="Missing Fields Please check again!!";
     public static final String NO_DETAILS="No Account details available please check account id";
 
 }
