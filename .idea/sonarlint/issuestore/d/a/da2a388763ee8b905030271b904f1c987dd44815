@@ -1,0 +1,33 @@
+
+K
+java:S3740;"/Provide the parametrized type for this generic.(¾™‚8™½¹¶“2
+Q
+java:S3740M"/Provide the parametrized type for this generic.(û”âÔÿÿÿÿÿ8™½¹¶“2
+Q
+java:S3740Q"/Provide the parametrized type for this generic.(ß·Ó®úÿÿÿÿ8™½¹¶“2
+Q
+java:S3740T"/Provide the parametrized type for this generic.(ùï¢¬şÿÿÿÿ8™½¹¶“2
+R
+java:S3740"/Provide the parametrized type for this generic.(¯Öúâıÿÿÿÿ8ºŠÃ¶“2
+M
+java:S3740ˆ"/Provide the parametrized type for this generic.(’ôÑ¨8øÇÊ¶“2
+M
+java:S3740"/Provide the parametrized type for this generic.(’ôÑ¨8øÇÊ¶“2
+R
+java:S3740Ÿ"/Provide the parametrized type for this generic.(û”âÔÿÿÿÿÿ8‡ÄÔ¶“2
+R
+java:S3740¡"/Provide the parametrized type for this generic.(²ÇîÁıÿÿÿÿ8‡ÄÔ¶“2
+R
+java:S3740Å"/Provide the parametrized type for this generic.(¸Ú©öùÿÿÿÿ8‡ÄÔ¶“2
+M
+java:S3740Ç"/Provide the parametrized type for this generic.(’ÄÒ¨8‡ÄÔ¶“2
+o
+java:S6204e"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹8Ñ“º¶“2
+u
+java:S3776¥"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(‘Äôëúÿÿÿÿ8úÃ·¶“2
+I
+java:S3011·",This accessibility bypass should be removed.(‰ÁÎ 8üÃ·¶“2
+I
+java:S3011»",This accessibility bypass should be removed.(ˆËÜ8üÃ·¶“2
+I
+java:S3011½",This accessibility bypass should be removed.(ˆËÜ8üÃ·¶“2
